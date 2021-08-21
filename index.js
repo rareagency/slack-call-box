@@ -14,6 +14,7 @@ async function open(url) {
   const browser = await puppeteer.launch({
     headless: false,
     defaultViewport: null,
+    executablePath: process.env.CHROMIUM_EXECUTABLE,
     args: [
       "--start-fullscreen",
       "--kiosk",

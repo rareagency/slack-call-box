@@ -39,7 +39,7 @@ async function open(url) {
     "#onetrust-accept-btn-handler"
   );
   if (cookiePopup) {
-    await page.click("#onetrust-accept-btn-handler");
+    await cookiePopup.click();
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 

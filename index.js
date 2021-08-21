@@ -37,7 +37,13 @@ async function login(page) {
   await page.click('button[data-qa="signin_button"]');
 }
 
+let currentBrowser;
+
 async function open(url) {
+  if (currentBrowser) {
+    currentBrowser.close();
+  }
+
   const browser = await puppeteer.launch({
     headless: false,
     defaultViewport: null,
@@ -53,6 +59,8 @@ async function open(url) {
     ignoreDefaultArgs: ["--enable-automation"],
   });
 
+  currentBrowser = browser;
+
   const context = browser.defaultBrowserContext();
   context.overridePermissions(url, ["camera", "microphone"]);
 
@@ -67,12 +75,24 @@ async function open(url) {
   }
 
   // Turn camera on
-  const element = await page.waitForSelector('button[data-qa="video-button"]', {
+  const videoButton = await page.waitForSelector(
+    'button[data-qa="video-button"]',
+    {
+      timeout: null,
+    }
+  );
+
+  if (videoButton.getProperty("aria-checked") !== "true") {
+    await videoButton.click();
+  }
+
+  // Turn mic on
+  const micButton = await page.waitForSelector('button[data-qa="mic-button"]', {
     timeout: null,
   });
 
-  if (element.getProperty("aria-checked") !== "true") {
-    await element.click();
+  if (micButton.getProperty("aria-checked") !== "true") {
+    await micButton.click();
   }
 }
 

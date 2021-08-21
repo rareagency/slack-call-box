@@ -34,9 +34,13 @@ async function open(url) {
     waitUntil: "networkidle2",
   });
 
-  await page.waitForSelector("#onetrust-accept-btn-handler");
-  await page.click("#onetrust-accept-btn-handler");
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const cookiePopup = await page.waitForSelector(
+    "#onetrust-accept-btn-handler"
+  );
+  if (cookiePopup) {
+    await page.click("#onetrust-accept-btn-handler");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
 
   await page.waitForSelector('input[data-qa="signin_domain_input"]');
   await page.type('input[data-qa="signin_domain_input"]', "rareagency");

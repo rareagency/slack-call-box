@@ -35,21 +35,24 @@ async function open(url) {
     waitUntil: "networkidle2",
   });
 
-  const cookiePopup = await page.waitForSelector(
-    "#onetrust-accept-btn-handler"
+  const domainInput = await page.waitForSelector(
+    'input[data-qa="signin_domain_input"]'
   );
+
+  // Cookie popup
+  const cookiePopup = await page.$("#onetrust-accept-btn-handler");
   if (cookiePopup) {
     await cookiePopup.click();
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  await page.waitForSelector('input[data-qa="signin_domain_input"]');
-  await page.type('input[data-qa="signin_domain_input"]', "rareagency");
+  await domainInput.type("rareagency");
+
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   await page.click('button[data-qa="submit_team_domain_button"]');
-  await page.waitForSelector('input[data-qa="login_email"]');
-  await page.type('input[data-qa="login_email"]', process.env.SLACK_USERNAME);
+  const email = await page.waitForSelector('input[data-qa="login_email"]');
+  await email.type(process.env.SLACK_USERNAME);
   await page.type(
     'input[data-qa="login_password"]',
     process.env.SLACK_PASSWORD

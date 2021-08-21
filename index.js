@@ -15,6 +15,7 @@ async function open(url) {
     headless: false,
     defaultViewport: null,
     executablePath: process.env.CHROMIUM_EXECUTABLE,
+    userDataDir: "./data",
     args: [
       "--start-fullscreen",
       "--kiosk",
@@ -55,6 +56,15 @@ async function open(url) {
   );
   await new Promise((resolve) => setTimeout(resolve, 1000));
   await page.click('button[data-qa="signin_button"]');
+
+  // Turn camera on
+  const element = await page.waitForSelector('button[data-qa="video-button"]', {
+    timeout: null,
+  });
+
+  if (element.getProperty("aria-checked") !== "true") {
+    await element.click();
+  }
 }
 
 // Listens to incoming messages that contain "hello"

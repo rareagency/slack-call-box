@@ -62,7 +62,7 @@ async function open(url) {
     waitUntil: "networkidle2",
   });
 
-  if (page.url().contains("workspace-signin")) {
+  if (page.url().includes("workspace-signin")) {
     await login();
   }
 

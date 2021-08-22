@@ -95,13 +95,17 @@ async function open(url) {
 
   if (micButton.getProperty("aria-checked") !== "true") {
     console.log("Unmuted microphone");
-
     await micButton.click();
   }
 
+  /*
+   * Auto leave
+   */
+  const roomEmptyText = () => page.$(".p-active_call__empty_message_heading");
+
   const startedWaiting = Date.now();
   const fiveMinutes = 1000 * 60 * 5;
-  let roomEmpty = await page.$("p-active_call__empty_message_heading");
+  let roomEmpty = await roomEmptyText();
 
   if (roomEmpty) {
     console.log("Room is empty, waiting for others");
@@ -113,7 +117,7 @@ async function open(url) {
         currentBrowser = null;
         return;
       }
-      roomEmpty = await page.$("p-active_call__empty_message_heading");
+      roomEmpty = await roomEmptyText();
       await new Promise((resolve) => setTimeout(resolve, 10000));
     }
   } else {
@@ -122,7 +126,7 @@ async function open(url) {
 
   // Leave the room once everyone else is gone
   while (!roomEmpty) {
-    roomEmpty = await page.$("p-active_call__empty_message_heading");
+    roomEmpty = await roomEmptyText();
     console.log("Room currently empty", Boolean(roomEmpty));
     await new Promise((resolve) => setTimeout(resolve, 10000));
   }

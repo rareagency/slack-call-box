@@ -95,6 +95,30 @@ async function open(url) {
   if (micButton.getProperty("aria-checked") !== "false") {
     await micButton.click();
   }
+
+  const startedWaiting = Date.now();
+  const fiveMinutes = 1000 * 60 * 5;
+  let roomEmpty = await page.$("p-active_call__empty_message_heading");
+
+  if (roomEmpty) {
+    while (roomEmpty) {
+      const waitedOver5Minutes = Date.now() - startedWaiting < fiveMinutes;
+      if (waitedOver5Minutes) {
+        await currentBrowser.close();
+        currentBrowser = null;
+        return;
+      }
+      roomEmpty = await page.$("p-active_call__empty_message_heading");
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+    }
+  }
+
+  // Leave the room once everyone else is gone
+  while (!roomEmpty) {
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+  }
+  await currentBrowser.close();
+  currentBrowser = null;
 }
 
 // Listens to incoming messages that contain "hello"

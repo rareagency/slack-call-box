@@ -40,6 +40,7 @@ async function login(page) {
 let currentBrowser;
 
 async function open(url) {
+  console.log("📞 Joining call", url);
   if (currentBrowser) {
     currentBrowser.close();
   }

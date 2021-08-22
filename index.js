@@ -84,6 +84,7 @@ async function open(url) {
   );
 
   if (videoButton.getProperty("aria-checked") !== "true") {
+    console.log("Enabled camera");
     await videoButton.click();
   }
 
@@ -92,7 +93,9 @@ async function open(url) {
     timeout: null,
   });
 
-  if (micButton.getProperty("aria-checked") !== "false") {
+  if (micButton.getProperty("aria-checked") !== "true") {
+    console.log("Unmuted microphone");
+
     await micButton.click();
   }
 
@@ -101,9 +104,11 @@ async function open(url) {
   let roomEmpty = await page.$("p-active_call__empty_message_heading");
 
   if (roomEmpty) {
+    console.log("Room is empty, waiting for others");
     while (roomEmpty) {
       const waitedOver5Minutes = Date.now() - startedWaiting < fiveMinutes;
       if (waitedOver5Minutes) {
+        console.log("Waited for 5 minutes in an empty room, leaving");
         await currentBrowser.close();
         currentBrowser = null;
         return;
@@ -111,12 +116,16 @@ async function open(url) {
       roomEmpty = await page.$("p-active_call__empty_message_heading");
       await new Promise((resolve) => setTimeout(resolve, 10000));
     }
+  } else {
+    console.log("Someone is in the room already");
   }
 
   // Leave the room once everyone else is gone
   while (!roomEmpty) {
+    roomEmpty = await page.$("p-active_call__empty_message_heading");
     await new Promise((resolve) => setTimeout(resolve, 10000));
   }
+  console.log("Everyone left, bye");
   await currentBrowser.close();
   currentBrowser = null;
 }

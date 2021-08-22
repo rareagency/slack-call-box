@@ -92,7 +92,7 @@ async function open(url) {
     timeout: null,
   });
 
-  if (micButton.getProperty("aria-checked") !== "true") {
+  if (micButton.getProperty("aria-checked") !== "false") {
     await micButton.click();
   }
 }

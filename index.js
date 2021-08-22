@@ -123,6 +123,7 @@ async function open(url) {
   // Leave the room once everyone else is gone
   while (!roomEmpty) {
     roomEmpty = await page.$("p-active_call__empty_message_heading");
+    console.log("Room currently empty", Boolean(roomEmpty));
     await new Promise((resolve) => setTimeout(resolve, 10000));
   }
   console.log("Everyone left, bye");

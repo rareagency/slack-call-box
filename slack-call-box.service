@@ -1,0 +1,15 @@
+[Unit]
+Description=RPI slack-call-box
+After=systemd-networkd-wait-online.service sonos-api.service
+Requires=systemd-networkd-wait-online.service
+
+[Service]
+Environment=NODE_PORT=3001
+Environment=CHROMIUM_EXECUTABLE=/usr/bin/chromium-browser
+Environment=DISPLAY=:0
+ExecStart=sudo -H -u pi /bin/bash -c "cd /home/pi/apps/slack-call-box && git pull && /usr/local/bin/node index.js"
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

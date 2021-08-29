@@ -10,11 +10,6 @@ const app = new App({
   appToken: process.env.SLACK_APP_TOKEN,
 });
 
-function wait(forTime) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, forTime);
-  })
-}
 
 async function login(page) {
   const domainInput = await page.waitForSelector(
@@ -57,8 +52,8 @@ async function open(url) {
     executablePath: process.env.CHROMIUM_EXECUTABLE,
     userDataDir: "./data",
     args: [
-      // "--start-fullscreen",
-      // "--kiosk",
+      "--start-fullscreen",
+      "--kiosk",
       "--disable-infobars",
       "--disable-session-crashed-bubble",
       "--noerrdialogs",

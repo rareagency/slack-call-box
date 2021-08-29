@@ -89,9 +89,6 @@ async function open(url) {
 
   const [isCameraOn] = await page.$$eval("button[data-qa='video-button']", el => el.map(x => x.getAttribute("aria-checked")));
 
-
-  console.log({isCameraOn});
-
   if (isCameraOn !== "true") {
     console.log("Enabled camera");
     await videoButton.click();
@@ -103,7 +100,6 @@ async function open(url) {
   });
 
   const [isMicOn] = await page.$$eval("button[data-qa='mic-button']", el => el.map(x => x.getAttribute("aria-checked")));
-  console.log({isMicOn});
 
   if (isMicOn !== "true") {
     console.log("Unmuted microphone");

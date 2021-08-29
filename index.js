@@ -100,7 +100,7 @@ async function open(url) {
 
   console.log('Loader visible')
 
-  while(!await page.$('.c-infinite_spinner__spinner')) {
+  while(await page.$('.c-infinite_spinner__spinner')) {
     console.log('App loading')
   }
 

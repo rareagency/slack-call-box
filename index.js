@@ -81,7 +81,6 @@ async function open(url) {
     await login();
   } else {
     console.log('Already logged in');
-
   }
 
   // Turn camera on
@@ -92,7 +91,11 @@ async function open(url) {
     }
   );
 
-  if ((await videoButton.getProperty("aria-checked")) !== "true") {
+  const isCameraOn = await page.evaluate('document.querySelector("button[data-qa="video-button"]").getAttribute("area-checked")')
+
+  console.log({isCameraOn});
+
+  if (isCameraOn !== "true") {
     console.log("Enabled camera");
     await videoButton.click();
   }
@@ -102,10 +105,10 @@ async function open(url) {
     timeout: null,
   });
 
-  const micPressed = await micButton.getProperty("aria-pressed")
-  console.log({micPressed});
+  const isMicOn = await page.evaluate('document.querySelector("button[data-qa="mic-button"]").getAttribute("area-checked")')
+  console.log({isMicOn});
 
-  if (micPressed !== "true") {
+  if (isMicOn !== "true") {
     console.log("Unmuted microphone");
     await micButton.click();
   }

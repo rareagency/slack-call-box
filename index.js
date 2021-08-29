@@ -106,6 +106,8 @@ async function open(url) {
     timeout: null,
   });
 
+  console.log('Mic button pressed', micButton.getProperty("aria-pressed"));
+
   if (micButton.getProperty("aria-pressed") !== "true") {
     console.log("Unmuted microphone");
     // await micButton.click();

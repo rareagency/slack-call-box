@@ -57,8 +57,8 @@ async function open(url) {
     executablePath: process.env.CHROMIUM_EXECUTABLE,
     userDataDir: "./data",
     args: [
-      "--start-fullscreen",
-      "--kiosk",
+      // "--start-fullscreen",
+      // "--kiosk",
       "--disable-infobars",
       "--disable-session-crashed-bubble",
       "--noerrdialogs",
@@ -102,14 +102,14 @@ async function open(url) {
   await wait(5000)
 
   // Turn mic on
-  const micButton = await page.waitForSelector('button[data-qa="mic-button"]', {
-    timeout: null,
-  });
+  // const micButton = await page.waitForSelector('button[data-qa="mic-button"]', {
+  //   timeout: null,
+  // });
 
-  if (micButton.getProperty("aria-checked") !== "true") {
-    console.log("Unmuted microphone");
-    await micButton.click();
-  }
+  // if (micButton.getProperty("aria-checked") !== "true") {
+  //   console.log("Unmuted microphone");
+  //   await micButton.click();
+  // }
 
   /*
    * Auto leave

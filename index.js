@@ -92,25 +92,20 @@ async function open(url) {
     }
   );
 
-  if (videoButton.getProperty("aria-checked") !== "true") {
+  if ((await videoButton.getProperty("aria-checked")) !== "true") {
     console.log("Enabled camera");
     await videoButton.click();
   }
-
-  // Slack automatically mutes the microphone few seconds after joining the call
-  // this reverses that
-  await wait(5000)
 
   // Turn mic on
   const micButton = await page.waitForSelector('button[data-qa="mic-button"]', {
     timeout: null,
   });
+  const micPressed = await micButton.getProperty("aria-pressed")
 
-  console.log('Mic button pressed', micButton.getProperty("aria-pressed"));
-
-  if (micButton.getProperty("aria-pressed") !== "true") {
+  if (micPressed !== "true") {
     console.log("Unmuted microphone");
-    // await micButton.click();
+    await micButton.click();
   }
 
   /*

@@ -74,7 +74,7 @@ async function open(url) {
   const page = await browser.newPage();
 
   await page.goto(url, {
-    waitUntil: "networkidle2",
+    timeout: 0
   });
 
   if (page.url().includes("workspace-signin")) {

@@ -73,6 +73,9 @@ async function open(url) {
 
   if (page.url().includes("workspace-signin")) {
     await login();
+  } else {
+    console.log('Already logged in');
+
   }
 
   /*
@@ -81,12 +84,19 @@ async function open(url) {
    * Without this enabling the camera & mic might happen too early
    * and Slack might press the buttons again reverting the action
    */
-  await page.waitForSelector(
-    '.c-infinite_spinner__spinner',
-    {
-      timeout: null,
-    }
-  );
+  console.log('Trying to find the spinner');
+
+  try {
+
+    await page.waitForSelector(
+      '.c-infinite_spinner__spinner',
+      {
+        timeout: 5000,
+      }
+    );
+  } catch (error) {
+    console.log('Spinner was not found in 5000ms');
+  }
 
   console.log('Loader visible')
 
@@ -159,7 +169,11 @@ async function open(url) {
 // Listens to incoming messages that contain "hello"
 app.message(async ({ message }) => {
   if (message.subtype === "sh_room_created") {
-    open(`https://app.slack.com/free-willy/TTHGF5X5Y/${message.room.id}`);
+    try {
+      await open(`https://app.slack.com/free-willy/TTHGF5X5Y/${message.room.id}`);
+    } catch (error) {
+      console.error(error);
+    }
   }
 });
 

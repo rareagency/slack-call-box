@@ -84,27 +84,6 @@ async function open(url) {
    * Without this enabling the camera & mic might happen too early
    * and Slack might press the buttons again reverting the action
    */
-  console.log('Trying to find the spinner');
-
-  try {
-
-    await page.waitForSelector(
-      '.c-infinite_spinner__spinner',
-      {
-        timeout: 5000,
-      }
-    );
-  } catch (error) {
-    console.log('Spinner was not found in 5000ms');
-  }
-
-  console.log('Loader visible')
-
-  while(await page.$('.c-infinite_spinner__spinner')) {
-    console.log('App loading')
-  }
-
-  console.log('App loaded')
 
   // Turn camera on
   const videoButton = await page.waitForSelector(
@@ -124,7 +103,7 @@ async function open(url) {
     timeout: null,
   });
 
-  if (micButton.getProperty("aria-checked") !== "true") {
+  if (micButton.getProperty("aria-checked") !== "false") {
     console.log("Unmuted microphone");
     await micButton.click();
   }

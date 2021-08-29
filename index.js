@@ -86,7 +86,7 @@ async function open(url) {
     }
   );
 
-  const isCameraOn = await page.evaluate('document.querySelector("button[data-qa="video-button"]").getAttribute("area-checked")')
+  const isCameraOn = await page.evaluate(`document.querySelector("button[data-qa='video-button']").getAttribute("area-checked")`)
 
   console.log({isCameraOn});
 
@@ -100,7 +100,7 @@ async function open(url) {
     timeout: null,
   });
 
-  const isMicOn = await page.evaluate('document.querySelector("button[data-qa="mic-button"]").getAttribute("area-checked")')
+  const isMicOn = await page.evaluate(`document.querySelector("button[data-qa='mic-button']").getAttribute("area-checked")`)
   console.log({isMicOn});
 
   if (isMicOn !== "true") {

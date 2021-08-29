@@ -106,7 +106,7 @@ async function open(url) {
     timeout: null,
   });
 
-  if (micButton.getProperty("aria-checked") !== "false") {
+  if (micButton.getProperty("aria-checked") !== "true") {
     console.log("Unmuted microphone");
     await micButton.click();
   }

@@ -10,6 +10,12 @@ const app = new App({
   appToken: process.env.SLACK_APP_TOKEN,
 });
 
+function wait(forTime) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, forTime);
+  })
+}
+
 async function login(page) {
   const domainInput = await page.waitForSelector(
     'input[data-qa="signin_domain_input"]'
@@ -78,13 +84,6 @@ async function open(url) {
 
   }
 
-  /*
-   * Wait until the Slack call is completely loaded
-   *
-   * Without this enabling the camera & mic might happen too early
-   * and Slack might press the buttons again reverting the action
-   */
-
   // Turn camera on
   const videoButton = await page.waitForSelector(
     'button[data-qa="video-button"]',
@@ -97,6 +96,10 @@ async function open(url) {
     console.log("Enabled camera");
     await videoButton.click();
   }
+
+  // Slack automatically mutes the microphone few seconds after joining the call
+  // this reverses that
+  await wait(5000)
 
   // Turn mic on
   const micButton = await page.waitForSelector('button[data-qa="mic-button"]', {

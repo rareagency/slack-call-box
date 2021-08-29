@@ -102,14 +102,14 @@ async function open(url) {
   await wait(5000)
 
   // Turn mic on
-  // const micButton = await page.waitForSelector('button[data-qa="mic-button"]', {
-  //   timeout: null,
-  // });
+  const micButton = await page.waitForSelector('button[data-qa="mic-button"]', {
+    timeout: null,
+  });
 
-  // if (micButton.getProperty("aria-checked") !== "true") {
-  //   console.log("Unmuted microphone");
-  //   await micButton.click();
-  // }
+  if (micButton.getProperty("aria-pressed") !== "true") {
+    console.log("Unmuted microphone");
+    // await micButton.click();
+  }
 
   /*
    * Auto leave
